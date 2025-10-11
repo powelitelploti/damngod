@@ -1,0 +1,10 @@
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.csproj.AssemblyReference.cache
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\kurs.Form1.resources
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая_надежда.Properties.Resources.resources
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.csproj.GenerateResource.cache
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.csproj.CoreCompileInputs.cache
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\bin\Debug\курсовая надежда.exe.config
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\bin\Debug\курсовая надежда.exe
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\bin\Debug\курсовая надежда.pdb
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.exe
+E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.pdb
