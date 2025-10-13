@@ -20,7 +20,7 @@
             base.Dispose(disposing);
         }
 
-        #region Код, автоматически созданный конструктором форм Windows
+     #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
         /// Требуемый метод для поддержки конструктора — не изменяйте 
@@ -97,7 +97,7 @@
             this.btnSaveSystem.TabIndex = 6;
             this.btnSaveSystem.Text = "Сохранить";
             this.btnSaveSystem.UseVisualStyleBackColor = true;
-            this.btnSaveSystem.Click += new System.EventHandler(this.btnSave_Click_1);
+            this.btnSaveSystem.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnLoadFromFile
             // 
@@ -164,9 +164,14 @@
             // 
             this.dgvEquations.AllowUserToResizeColumns = false;
             this.dgvEquations.AllowUserToResizeRows = false;
+            this.dgvEquations.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dgvEquations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEquations.Location = new System.Drawing.Point(8, 45);
             this.dgvEquations.Name = "dgvEquations";
+            this.dgvEquations.RowHeadersWidth = 80;
+            this.dgvEquations.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvEquations.ShowCellToolTips = false;
+            this.dgvEquations.ShowEditingIcon = false;
             this.dgvEquations.Size = new System.Drawing.Size(1086, 412);
             this.dgvEquations.TabIndex = 0;
             this.dgvEquations.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEquations_CellValueChanged);

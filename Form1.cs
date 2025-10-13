@@ -132,8 +132,122 @@ namespace kurs
             solutionText.AppendLine($"\nВремя решения: {sw.Elapsed.TotalMilliseconds:F2} мс");
 
             rtbSolution.Text = solutionText.ToString();
-            richTextBox1.Text = solutionText.ToString();
+            SolveSystemBrief(matrix, freeTerms);
         }
+
+        private void SolveSystemBrief(double[,] matrix, double[] freeTerms)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            StringBuilder solutionText = new StringBuilder();
+            int size = freeTerms.Length;
+
+            // Заголовок и исходная система
+            if (!string.IsNullOrEmpty(currentFilePath))
+            {
+                string fileInfo = isFileModified ?
+                    $"Файл: {System.IO.Path.GetFileName(currentFilePath)} (изменен)" :
+                    $"Файл: {System.IO.Path.GetFileName(currentFilePath)}";
+                solutionText.AppendLine(fileInfo);
+                solutionText.AppendLine();
+            }
+
+            solutionText.AppendLine("ИСХОДНАЯ СИСТЕМА УРАВНЕНИЙ:");
+            solutionText.AppendLine(GetSystemString(matrix, freeTerms));
+            solutionText.AppendLine();
+
+            try
+            {
+                // Вычисляем главный определитель
+                double mainDet = CalculateDeterminantOptimized(matrix);
+                solutionText.AppendLine($"Главный определитель Δ = {mainDet:F5}");
+                solutionText.AppendLine();
+
+                if (Math.Abs(mainDet) < 1e-10)
+                {
+                    solutionText.AppendLine("❌ СИСТЕМА ВЫРОЖДЕНА");
+                    solutionText.AppendLine("Определитель равен нулю, решение не существует или не единственно");
+                    DisplayBriefSolution(solutionText, sw);
+                    return;
+                }
+
+                // Вычисляем решения методом Крамера
+                double[] solutions = new double[size];
+                for (int i = 0; i < size; i++)
+                {
+                    double[,] modifiedMatrix = ReplaceColumn(matrix, freeTerms, i);
+                    double detI = CalculateDeterminantOptimized(modifiedMatrix);
+                    solutions[i] = detI / mainDet;
+                }
+
+                // Выводим результаты
+                solutionText.AppendLine("РЕШЕНИЕ СИСТЕМЫ:");
+                for (int i = 0; i < size; i++)
+                {
+                    solutionText.AppendLine($"x{i + 1} = {solutions[i]:F6}");
+                }
+                solutionText.AppendLine();
+
+                // Проверка обусловленности
+                double cond = CalculateConditionNumber(matrix);
+                solutionText.AppendLine($"Число обусловленности: {cond:F2}");
+
+                if (cond > 20)
+                    solutionText.AppendLine("⚠️  Система плохо обусловлена");
+                else
+                    solutionText.AppendLine("✅ Система хорошо обусловлена");
+
+                solutionText.AppendLine();
+
+                // Проверка решения (невязка)
+                solutionText.AppendLine("ПРОВЕРКА РЕШЕНИЯ:");
+                double maxError = CalculateSolutionError(matrix, freeTerms, solutions);
+                solutionText.AppendLine($"Максимальная невязка: {maxError:E2}");
+
+                if (maxError < 1e-10)
+                    solutionText.AppendLine("✅ Решение точное");
+                else if (maxError < 1e-5)
+                    solutionText.AppendLine("✅ Решение достаточно точное");
+                else
+                    solutionText.AppendLine("⚠️  Решение имеет значительную погрешность");
+
+            }
+            catch (Exception ex)
+            {
+                solutionText.AppendLine($"❌ ОШИБКА: {ex.Message}");
+            }
+
+            DisplayBriefSolution(solutionText, sw);
+        }
+
+        private void DisplayBriefSolution(StringBuilder sb, Stopwatch sw)
+        {
+            sw.Stop();
+            sb.AppendLine($"\nВремя решения: {sw.Elapsed.TotalMilliseconds:F2} мс");
+
+            // Выводим в richTextBox1 (первая вкладка) - краткий вариант
+            richTextBox1.Text = sb.ToString();
+        }
+
+        // ==================== МЕТОД ДЛЯ ВЫЧИСЛЕНИЯ НЕВЯЗКИ ====================
+        private double CalculateSolutionError(double[,] matrix, double[] freeTerms, double[] solutions)
+        {
+            int size = freeTerms.Length;
+            double maxError = 0;
+
+            for (int i = 0; i < size; i++)
+            {
+                double sum = 0;
+                for (int j = 0; j < size; j++)
+                {
+                    sum += matrix[i, j] * solutions[j];
+                }
+                double error = Math.Abs(sum - freeTerms[i]);
+                if (error > maxError) maxError = error;
+            }
+
+            return maxError;
+        }
+
 
         private double[,] ReplaceColumn(double[,] matrix, double[] newColumn, int columnIndex)
         {
@@ -211,6 +325,7 @@ namespace kurs
             sb.AppendLine($"Финальное значение {determinantName} = {det:F5}");
             return det;
         }
+
 
         private double CalculateConditionNumberWithSteps(double[,] matrix, StringBuilder sb)
         {
@@ -789,8 +904,8 @@ namespace kurs
             currentFilePath = null;
             isFileModified = false;
 
-            int size = (int)nudSystemSize.Value; 
-            InitializeGrid(size); 
+            int size = (int)nudSystemSize.Value;
+            InitializeGrid(size);
         }
     }
 }
