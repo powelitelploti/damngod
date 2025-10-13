@@ -39,10 +39,13 @@
             this.nudSystemSize = new System.Windows.Forms.NumericUpDown();
             this.dgvEquations = new System.Windows.Forms.DataGridView();
             this.tabSolution = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnSaveSolution = new System.Windows.Forms.Button();
             this.btnCopySolution = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.rtbSolution = new System.Windows.Forms.RichTextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.tabControlMain.SuspendLayout();
             this.tabEquations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).BeginInit();
@@ -58,7 +61,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 0);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(1140, 734);
+            this.tabControlMain.Size = new System.Drawing.Size(1269, 791);
             this.tabControlMain.TabIndex = 0;
             // 
             // tabEquations
@@ -74,7 +77,7 @@
             this.tabEquations.Location = new System.Drawing.Point(4, 22);
             this.tabEquations.Name = "tabEquations";
             this.tabEquations.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEquations.Size = new System.Drawing.Size(1132, 708);
+            this.tabEquations.Size = new System.Drawing.Size(1261, 765);
             this.tabEquations.TabIndex = 1;
             this.tabEquations.Text = "Система уравнений";
             this.tabEquations.UseVisualStyleBackColor = true;
@@ -97,7 +100,7 @@
             this.btnSaveSystem.TabIndex = 6;
             this.btnSaveSystem.Text = "Сохранить";
             this.btnSaveSystem.UseVisualStyleBackColor = true;
-            this.btnSaveSystem.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSaveSystem.Click += new System.EventHandler(this.btnSaveMatrix_Click);
             // 
             // btnLoadFromFile
             // 
@@ -121,7 +124,7 @@
             // 
             // btnSolve
             // 
-            this.btnSolve.Location = new System.Drawing.Point(876, 484);
+            this.btnSolve.Location = new System.Drawing.Point(848, 559);
             this.btnSolve.Name = "btnSolve";
             this.btnSolve.Size = new System.Drawing.Size(75, 23);
             this.btnSolve.TabIndex = 3;
@@ -131,7 +134,7 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(8, 486);
+            this.richTextBox1.Location = new System.Drawing.Point(8, 559);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(824, 194);
             this.richTextBox1.TabIndex = 2;
@@ -141,7 +144,7 @@
             // 
             this.nudSystemSize.Location = new System.Drawing.Point(18, 10);
             this.nudSystemSize.Maximum = new decimal(new int[] {
-            15,
+            20,
             0,
             0,
             0});
@@ -162,6 +165,7 @@
             // 
             // dgvEquations
             // 
+            this.dgvEquations.AllowUserToAddRows = false;
             this.dgvEquations.AllowUserToResizeColumns = false;
             this.dgvEquations.AllowUserToResizeRows = false;
             this.dgvEquations.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
@@ -172,28 +176,40 @@
             this.dgvEquations.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvEquations.ShowCellToolTips = false;
             this.dgvEquations.ShowEditingIcon = false;
-            this.dgvEquations.Size = new System.Drawing.Size(1086, 412);
+            this.dgvEquations.Size = new System.Drawing.Size(1163, 477);
             this.dgvEquations.TabIndex = 0;
             this.dgvEquations.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEquations_CellValueChanged);
             // 
             // tabSolution
             // 
+            this.tabSolution.Controls.Add(this.button2);
+            this.tabSolution.Controls.Add(this.button1);
             this.tabSolution.Controls.Add(this.btnSaveSolution);
             this.tabSolution.Controls.Add(this.btnCopySolution);
             this.tabSolution.Controls.Add(this.btnBack);
             this.tabSolution.Controls.Add(this.rtbSolution);
             this.tabSolution.Location = new System.Drawing.Point(4, 22);
             this.tabSolution.Name = "tabSolution";
-            this.tabSolution.Size = new System.Drawing.Size(1132, 708);
+            this.tabSolution.Size = new System.Drawing.Size(1261, 765);
             this.tabSolution.TabIndex = 2;
             this.tabSolution.Text = "Решение";
             this.tabSolution.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(58, 705);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(589, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Распечатать решение";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // btnSaveSolution
             // 
-            this.btnSaveSolution.Location = new System.Drawing.Point(571, 656);
+            this.btnSaveSolution.Location = new System.Drawing.Point(666, 705);
             this.btnSaveSolution.Name = "btnSaveSolution";
-            this.btnSaveSolution.Size = new System.Drawing.Size(558, 23);
+            this.btnSaveSolution.Size = new System.Drawing.Size(589, 23);
             this.btnSaveSolution.TabIndex = 3;
             this.btnSaveSolution.Text = "Сохранить решение";
             this.btnSaveSolution.UseVisualStyleBackColor = true;
@@ -201,9 +217,9 @@
             // 
             // btnCopySolution
             // 
-            this.btnCopySolution.Location = new System.Drawing.Point(-4, 656);
+            this.btnCopySolution.Location = new System.Drawing.Point(58, 734);
             this.btnCopySolution.Name = "btnCopySolution";
-            this.btnCopySolution.Size = new System.Drawing.Size(569, 23);
+            this.btnCopySolution.Size = new System.Drawing.Size(1197, 23);
             this.btnCopySolution.TabIndex = 2;
             this.btnCopySolution.Text = "Копировать решение";
             this.btnCopySolution.UseVisualStyleBackColor = true;
@@ -211,10 +227,10 @@
             // 
             // btnBack
             // 
-            this.btnBack.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnBack.Location = new System.Drawing.Point(0, 685);
+            this.btnBack.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnBack.Location = new System.Drawing.Point(0, 0);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(1132, 23);
+            this.btnBack.Size = new System.Drawing.Size(52, 765);
             this.btnBack.TabIndex = 1;
             this.btnBack.Text = "Назад";
             this.btnBack.UseVisualStyleBackColor = true;
@@ -222,17 +238,27 @@
             // 
             // rtbSolution
             // 
-            this.rtbSolution.Location = new System.Drawing.Point(19, 16);
+            this.rtbSolution.Location = new System.Drawing.Point(58, 3);
             this.rtbSolution.Name = "rtbSolution";
-            this.rtbSolution.Size = new System.Drawing.Size(1096, 611);
+            this.rtbSolution.Size = new System.Drawing.Size(1195, 696);
             this.rtbSolution.TabIndex = 0;
             this.rtbSolution.Text = "";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1066, 27);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(131, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Выбрать шрифт";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1140, 734);
+            this.ClientSize = new System.Drawing.Size(1269, 791);
             this.Controls.Add(this.tabControlMain);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -262,6 +288,9 @@
         private System.Windows.Forms.RichTextBox rtbSolution;
         private System.Windows.Forms.Button btnSaveSolution;
         private System.Windows.Forms.Button btnCopySolution;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.FontDialog fontDialog1;
     }
 }
 

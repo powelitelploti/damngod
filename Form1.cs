@@ -4,6 +4,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Reflection;
+using TextFileLibrary;
+using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace kurs
 {
@@ -20,6 +24,7 @@ namespace kurs
             dgvEquations.AllowUserToResizeColumns = false;
             dgvEquations.AllowUserToResizeRows = false;
             dgvEquations.CellValueChanged += dgvEquations_CellValueChanged;
+
         }
 
         private void InitializeGrid(int size)
@@ -151,10 +156,6 @@ namespace kurs
                 solutionText.AppendLine();
             }
 
-            solutionText.AppendLine("ИСХОДНАЯ СИСТЕМА УРАВНЕНИЙ:");
-            solutionText.AppendLine(GetSystemString(matrix, freeTerms));
-            solutionText.AppendLine();
-
             try
             {
                 // Вычисляем главный определитель
@@ -229,23 +230,27 @@ namespace kurs
         }
 
         // ==================== МЕТОД ДЛЯ ВЫЧИСЛЕНИЯ НЕВЯЗКИ ====================
-        private double CalculateSolutionError(double[,] matrix, double[] freeTerms, double[] solutions)
+        double CalculateSolutionError(double[,] matrix, double[] freeTerms, double[] solutions)
         {
             int size = freeTerms.Length;
-            double maxError = 0;
+            double maxError = 0;  // Здесь будет максимальная невязка
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)  // Перебираем ВСЕ уравнения
             {
                 double sum = 0;
                 for (int j = 0; j < size; j++)
                 {
+                    //левая часть уравнения с найденным решением
                     sum += matrix[i, j] * solutions[j];
                 }
+
+                // (разница между вычисленным и должным
                 double error = Math.Abs(sum - freeTerms[i]);
-                if (error > maxError) maxError = error;
+
+                if (error > maxError) maxError = error;  // Ищем максимальную невязку
             }
 
-            return maxError;
+            return maxError;  // Возвращаем максимальную невязку
         }
 
 
@@ -653,6 +658,80 @@ namespace kurs
             }
         }
 
+        private void btnSaveMatrix_Click(object sender, EventArgs e)
+        {
+            // Если файл уже открыт и не изменялся, сохраняем в него
+            if (!string.IsNullOrEmpty(currentFilePath) && !isFileModified)
+            {
+                SaveSystemToFile(currentFilePath);
+                return;
+            }
+
+            // Иначе открываем диалог сохранения
+            SaveFileDialog saveDialog = new SaveFileDialog
+            {
+                Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+                Title = "Сохранить систему уравнений",
+                FileName = string.IsNullOrEmpty(currentFilePath) ? "system.txt" : System.IO.Path.GetFileName(currentFilePath)
+            };
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                SaveSystemToFile(saveDialog.FileName);
+            }
+        }
+
+        private bool SaveSystemToFile(string filePath)
+        {
+            try
+            {
+                int size = (int)nudSystemSize.Value;
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        // Берем значение из DataGridView или 0 если null
+                        object cellValue = dgvEquations.Rows[i].Cells[j].Value;
+                        string valueStr = cellValue?.ToString() ?? "0";
+
+                        // Записываем число
+                        sb.Append(valueStr);
+
+                        // Добавляем разделитель (табуляция или пробел)
+                        if (j < size - 1)
+                            sb.Append("\t");
+                    }
+
+                    // Добавляем свободный член
+                    object freeTermValue = dgvEquations.Rows[i].Cells[size].Value;
+                    string freeTermStr = freeTermValue?.ToString() ?? "0";
+                    sb.Append("\t");
+                    sb.Append(freeTermStr);
+
+                    sb.AppendLine();
+                }
+
+                // Сохраняем в файл
+                System.IO.File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+
+                // Обновляем информацию о файле
+                currentFilePath = filePath;
+                isFileModified = false;
+
+                MessageBox.Show("Система успешно сохранена в файл", "Успех",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}", "Ошибка",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         private void btnCopy_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(rtbSolution.Text))
@@ -724,6 +803,7 @@ namespace kurs
                 MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
 
@@ -906,6 +986,37 @@ namespace kurs
 
             int size = (int)nudSystemSize.Value;
             InitializeGrid(size);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string textToPrint = rtbSolution.Text;
+
+                // Указываем шрифт для печати (можно использовать шрифт из RichTextBox)
+                Font printFont = rtbSolution.Font;
+
+                // Создаем экземпляр TextFilePrinter и печатаем текст
+                TextFilePrinter printer = new TextFilePrinter();
+                printer.PrintText(textToPrint, printFont);
+
+                MessageBox.Show("Документ отправлен на печать.", "Печать", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при печати: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            fontDialog1.Font = rtbSolution.Font;
+
+            if (fontDialog1.ShowDialog() == DialogResult.OK)
+            {
+                rtbSolution.Font = fontDialog1.Font;
+            }
         }
     }
 }
