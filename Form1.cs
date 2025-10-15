@@ -24,7 +24,33 @@ namespace kurs
             dgvEquations.AllowUserToResizeColumns = false;
             dgvEquations.AllowUserToResizeRows = false;
             dgvEquations.CellValueChanged += dgvEquations_CellValueChanged;
+            //dgvEquations.KeyPress += dgvEquations_KeyPress;
+            dgvEquations.EditingControlShowing += dgvEquations_EditingControlShowing;
 
+        }
+
+        private void dgvEquations_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is System.Windows.Forms.TextBox textBox)
+            {
+                // Удаляем предыдущие обработчики (чтобы избежать дублирования)
+                textBox.KeyPress -= TextBox_KeyPress;
+                // Добавляем наш обработчик
+                textBox.KeyPress += TextBox_KeyPress;
+            }
+        }
+
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Разрешаем: цифры, знак минуса, десятичная точка, Backspace
+            if (char.IsDigit(e.KeyChar) ||
+                e.KeyChar == '-' ||
+                e.KeyChar == '.' ||
+                e.KeyChar == (char)Keys.Back)
+            {
+                return; // Разрешаем ввод
+            }
+            e.Handled = true;
         }
 
         private void InitializeGrid(int size)
@@ -134,6 +160,12 @@ namespace kurs
 
             // Добавляем информацию о времени выполнения
             sw.Stop();
+
+            // Проверка решения (невязка)
+            solutionText.AppendLine("ПРОВЕРКА РЕШЕНИЯ:");
+            double maxError = CalculateSolutionError(matrix, freeTerms, solutions);
+            solutionText.AppendLine($"Максимальная невязка: {maxError:E2}");
+
             solutionText.AppendLine($"\nВремя решения: {sw.Elapsed.TotalMilliseconds:F2} мс");
 
             rtbSolution.Text = solutionText.ToString();
@@ -401,78 +433,6 @@ namespace kurs
             return sb.ToString();
         }
 
-
-
-        // Метод Гаусса для решения СЛАУ
-        private double[] SolveWithGauss(double[,] matrix, double[] freeTerms)
-        {
-            int n = freeTerms.Length;
-            double[] result = new double[n];
-
-            // Прямой ход метода Гаусса
-            for (int i = 0; i < n; i++)
-            {
-                // Поиск ведущего элемента
-                int maxRow = i;
-                double maxVal = Math.Abs(matrix[i, i]);
-                for (int k = i + 1; k < n; k++)
-                {
-                    if (Math.Abs(matrix[k, i]) > maxVal)
-                    {
-                        maxVal = Math.Abs(matrix[k, i]);
-                        maxRow = k;
-                    }
-                }
-
-                // Перестановка строк
-                if (maxRow != i)
-                {
-                    for (int k = 0; k < n; k++)
-                    {
-                        double temp = matrix[i, k];
-                        matrix[i, k] = matrix[maxRow, k];
-                        matrix[maxRow, k] = temp;
-                    }
-                    double tempTerm = freeTerms[i];
-                    freeTerms[i] = freeTerms[maxRow];
-                    freeTerms[maxRow] = tempTerm;
-                }
-
-                // Нормализация текущей строки
-                double div = matrix[i, i];
-                if (Math.Abs(div) < 1e-10)
-                    throw new Exception("Система вырождена или плохо обусловлена");
-
-                for (int j = i; j < n; j++)
-                {
-                    matrix[i, j] /= div;
-                }
-                freeTerms[i] /= div;
-
-                // Исключение переменной из других уравнений
-                for (int k = i + 1; k < n; k++)
-                {
-                    double factor = matrix[k, i];
-                    for (int j = i; j < n; j++)
-                    {
-                        matrix[k, j] -= factor * matrix[i, j];
-                    }
-                    freeTerms[k] -= factor * freeTerms[i];
-                }
-            }
-
-            // Обратный ход метода Гаусса
-            for (int i = n - 1; i >= 0; i--)
-            {
-                result[i] = freeTerms[i];
-                for (int j = i + 1; j < n; j++)
-                {
-                    result[i] -= matrix[i, j] * result[j];
-                }
-            }
-
-            return result;
-        }
 
         // Оптимизированное вычисление определителя через метод Гаусса
         private double CalculateDeterminantOptimized(double[,] matrix)
@@ -1017,11 +977,6 @@ namespace kurs
             {
                 rtbSolution.Font = fontDialog1.Font;
             }
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button3_Click(object sender, EventArgs e)
