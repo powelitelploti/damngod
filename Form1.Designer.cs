@@ -47,6 +47,7 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.rtbSolution = new System.Windows.Forms.RichTextBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabControlMain.SuspendLayout();
             this.tabEquations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).BeginInit();
@@ -69,6 +70,7 @@
             // tabEquations
             // 
             this.tabEquations.BackColor = System.Drawing.Color.AliceBlue;
+            this.tabEquations.Controls.Add(this.button3);
             this.tabEquations.Controls.Add(this.btnClear);
             this.tabEquations.Controls.Add(this.btnSaveSystem);
             this.tabEquations.Controls.Add(this.btnLoadFromFile);
@@ -87,7 +89,7 @@
             // btnClear
             // 
             this.btnClear.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnClear.Location = new System.Drawing.Point(437, 8);
+            this.btnClear.Location = new System.Drawing.Point(482, 7);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(82, 23);
             this.btnClear.TabIndex = 7;
@@ -98,7 +100,7 @@
             // btnSaveSystem
             // 
             this.btnSaveSystem.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnSaveSystem.Location = new System.Drawing.Point(347, 8);
+            this.btnSaveSystem.Location = new System.Drawing.Point(392, 7);
             this.btnSaveSystem.Name = "btnSaveSystem";
             this.btnSaveSystem.Size = new System.Drawing.Size(82, 23);
             this.btnSaveSystem.TabIndex = 6;
@@ -109,7 +111,7 @@
             // btnLoadFromFile
             // 
             this.btnLoadFromFile.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnLoadFromFile.Location = new System.Drawing.Point(256, 8);
+            this.btnLoadFromFile.Location = new System.Drawing.Point(301, 7);
             this.btnLoadFromFile.Name = "btnLoadFromFile";
             this.btnLoadFromFile.Size = new System.Drawing.Size(82, 23);
             this.btnLoadFromFile.TabIndex = 5;
@@ -120,7 +122,7 @@
             // btnRandomize
             // 
             this.btnRandomize.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnRandomize.Location = new System.Drawing.Point(114, 8);
+            this.btnRandomize.Location = new System.Drawing.Point(159, 7);
             this.btnRandomize.Name = "btnRandomize";
             this.btnRandomize.Size = new System.Drawing.Size(132, 23);
             this.btnRandomize.TabIndex = 4;
@@ -131,9 +133,9 @@
             // btnSolve
             // 
             this.btnSolve.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnSolve.Location = new System.Drawing.Point(848, 559);
+            this.btnSolve.Location = new System.Drawing.Point(904, 537);
             this.btnSolve.Name = "btnSolve";
-            this.btnSolve.Size = new System.Drawing.Size(75, 23);
+            this.btnSolve.Size = new System.Drawing.Size(86, 41);
             this.btnSolve.TabIndex = 3;
             this.btnSolve.Text = "Решить";
             this.btnSolve.UseVisualStyleBackColor = false;
@@ -142,15 +144,17 @@
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.Color.White;
-            this.richTextBox1.Location = new System.Drawing.Point(8, 559);
+            this.richTextBox1.Location = new System.Drawing.Point(63, 537);
             this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(824, 194);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // nudSystemSize
             // 
-            this.nudSystemSize.Location = new System.Drawing.Point(18, 10);
+            this.nudSystemSize.Location = new System.Drawing.Point(63, 9);
             this.nudSystemSize.Maximum = new decimal(new int[] {
             20,
             0,
@@ -179,13 +183,13 @@
             this.dgvEquations.BackgroundColor = System.Drawing.Color.White;
             this.dgvEquations.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dgvEquations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvEquations.Location = new System.Drawing.Point(18, 49);
+            this.dgvEquations.Location = new System.Drawing.Point(63, 36);
             this.dgvEquations.Name = "dgvEquations";
             this.dgvEquations.RowHeadersWidth = 80;
             this.dgvEquations.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvEquations.ShowCellToolTips = false;
             this.dgvEquations.ShowEditingIcon = false;
-            this.dgvEquations.Size = new System.Drawing.Size(1163, 477);
+            this.dgvEquations.Size = new System.Drawing.Size(1163, 484);
             this.dgvEquations.TabIndex = 0;
             this.dgvEquations.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEquations_CellValueChanged);
             // 
@@ -270,6 +274,17 @@
             this.rtbSolution.TabIndex = 0;
             this.rtbSolution.Text = "";
             // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.AliceBlue;
+            this.button3.Location = new System.Drawing.Point(3, 11);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(54, 741);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "Назад";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -282,7 +297,8 @@
             this.MaximumSize = new System.Drawing.Size(1285, 830);
             this.MinimumSize = new System.Drawing.Size(1285, 804);
             this.Name = "Form1";
-            this.Text = "Решение систем линейных уравнений методом Крамера";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Решение систем линейных алгебраических уравнений методом Крамера";
             this.tabControlMain.ResumeLayout(false);
             this.tabEquations.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).EndInit();
@@ -312,6 +328,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.FontDialog fontDialog1;
+        private System.Windows.Forms.Button button3;
     }
 }
 

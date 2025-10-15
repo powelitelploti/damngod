@@ -1018,5 +1018,17 @@ namespace kurs
                 rtbSolution.Font = fontDialog1.Font;
             }
         }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+            this.Close();
+        }
     }
 }
