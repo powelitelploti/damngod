@@ -100,6 +100,7 @@
             // btnClear
             // 
             this.btnClear.BackColor = System.Drawing.Color.AliceBlue;
+            this.btnClear.Enabled = false;
             this.btnClear.Location = new System.Drawing.Point(482, 7);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(82, 23);
@@ -111,6 +112,7 @@
             // btnSaveSystem
             // 
             this.btnSaveSystem.BackColor = System.Drawing.Color.AliceBlue;
+            this.btnSaveSystem.Enabled = false;
             this.btnSaveSystem.Location = new System.Drawing.Point(392, 7);
             this.btnSaveSystem.Name = "btnSaveSystem";
             this.btnSaveSystem.Size = new System.Drawing.Size(82, 23);
@@ -144,6 +146,7 @@
             // btnSolve
             // 
             this.btnSolve.BackColor = System.Drawing.Color.AliceBlue;
+            this.btnSolve.Enabled = false;
             this.btnSolve.Location = new System.Drawing.Point(904, 537);
             this.btnSolve.Name = "btnSolve";
             this.btnSolve.Size = new System.Drawing.Size(86, 41);
@@ -188,6 +191,7 @@
             // dgvEquations
             // 
             this.dgvEquations.AllowUserToAddRows = false;
+            this.dgvEquations.AllowUserToDeleteRows = false;
             this.dgvEquations.AllowUserToResizeColumns = false;
             this.dgvEquations.AllowUserToResizeRows = false;
             this.dgvEquations.BackgroundColor = System.Drawing.Color.White;
@@ -197,9 +201,10 @@
             this.dgvEquations.Name = "dgvEquations";
             this.dgvEquations.RowHeadersWidth = 80;
             this.dgvEquations.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvEquations.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgvEquations.ShowCellToolTips = false;
             this.dgvEquations.ShowEditingIcon = false;
-            this.dgvEquations.Size = new System.Drawing.Size(1163, 484);
+            this.dgvEquations.Size = new System.Drawing.Size(261, 85);
             this.dgvEquations.TabIndex = 0;
             this.dgvEquations.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEquations_CellValueChanged);
             // 
@@ -284,6 +289,7 @@
             this.rtbSolution.Size = new System.Drawing.Size(1195, 696);
             this.rtbSolution.TabIndex = 0;
             this.rtbSolution.Text = "";
+            this.rtbSolution.TextChanged += new System.EventHandler(this.rtbSolution_TextChanged);
             // 
             // Form1
             // 

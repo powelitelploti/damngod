@@ -23,7 +23,52 @@ namespace kurs
             dgvEquations.CellValueChanged += dgvEquations_CellValueChanged;
             dgvEquations.EditingControlShowing += dgvEquations_EditingControlShowing;
             SetGridViewSortState(dgvEquations, DataGridViewColumnSortMode.NotSortable);
+            UpdateSolutionButtonsState();
         }
+
+        private void UpdateButtonsState()
+        {
+            bool hasData = CheckIfGridHasData();
+
+            // Включаем/выключаем кнопки в зависимости от наличия данных
+            btnSolve.Enabled = hasData;
+            if (btnSolve.Enabled == false)
+            {
+                btnSolve.BackColor = Color.LightGray;
+                btnSaveSystem.BackColor = Color.LightGray;
+                btnClear.BackColor = Color.LightGray;
+                rtbSolution.Clear();
+                richTextBox1.Clear();
+            }
+            else
+            {
+                btnSolve.BackColor = Color.AliceBlue;
+                btnSaveSystem.BackColor = Color.AliceBlue;
+                btnClear.BackColor = Color.AliceBlue;
+            }
+            btnSaveSystem.Enabled = hasData;
+            btnClear.Enabled = hasData;
+        }
+
+        private bool CheckIfGridHasData()
+        {
+            int size = (int)nudSystemSize.Value;
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j <= size; j++) // включая столбец свободных членов
+                {
+                    if (dgvEquations.Rows[i].Cells[j].Value != null &&
+                        !string.IsNullOrWhiteSpace(dgvEquations.Rows[i].Cells[j].Value.ToString()))
+                    {
+                        return true; // Нашли хотя бы одну заполненную ячейку
+                    }
+                }
+            }
+
+            return false; // Все ячейки пустые
+        }
+
 
         public static void SetGridViewSortState(DataGridView dgv, DataGridViewColumnSortMode sortMode)
         {
@@ -36,6 +81,10 @@ namespace kurs
             if (e.Control is System.Windows.Forms.TextBox textBox)
             {
                 textBox.KeyPress += TextBox_KeyPress;
+            }
+            if (dgvEquations.Rows.Count > 0)
+            {
+                dgvEquations.FirstDisplayedScrollingRowIndex = 0;
             }
         }
 
@@ -55,7 +104,6 @@ namespace kurs
         private void InitializeGrid(int size)
         {
             dgvEquations.Columns.Clear();
-
             for (int i = 0; i < size; i++)
             {
                 dgvEquations.Columns.Add($"x{i + 1}", $"x{i + 1}");
@@ -692,7 +740,87 @@ namespace kurs
 
         private void nudSystemSize_ValueChange(object sender, EventArgs e)
         {
-            InitializeGrid((int)nudSystemSize.Value);
+            int newSize = (int)nudSystemSize.Value;
+            int oldSize = dgvEquations.Columns.Count - 1; // -1 потому что последний столбец "свободный член"
+
+            // Сохраняем текущие данные
+            double[,] oldData = SaveCurrentGridData();
+
+            // Инициализируем новую сетку
+            InitializeGrid(newSize);
+
+            // Восстанавливаем данные (если размер увеличился или уменьшился)
+            RestoreGridData(oldData, newSize);
+
+            ResizeGrid();
+        }
+
+        private void ResizeGrid()
+        {
+            int newSize = (int)nudSystemSize.Value;
+
+            // Размеры ячеек
+            int cellWidth = 50;    // ширина обычной ячейки
+            int freeCellWidth = 80; // ширина ячейки свободного члена
+            int rowHeight = 22;    // высота строки
+            int headerWidth = 80;  // ширина заголовка строк
+
+            // Рассчитываем общую ширину
+            int totalWidth = headerWidth + (newSize * cellWidth) + freeCellWidth;
+
+            // Рассчитываем общую высоту
+            int totalHeight = (newSize * rowHeight) + dgvEquations.ColumnHeadersHeight;
+
+            // Устанавливаем размер
+            dgvEquations.Size = new Size(totalWidth, totalHeight);
+        }
+
+
+        private double[,] SaveCurrentGridData()
+        {
+            int oldSize = dgvEquations.Columns.Count - 1; // -1 для свободных членов
+            if (oldSize <= 0) return null;
+
+            double[,] data = new double[oldSize, oldSize + 1]; // +1 для свободных членов
+
+            for (int i = 0; i < oldSize; i++)
+            {
+                for (int j = 0; j < oldSize + 1; j++)
+                {
+                    if (dgvEquations.Rows[i].Cells[j].Value != null &&
+                        double.TryParse(dgvEquations.Rows[i].Cells[j].Value.ToString(), out double value))
+                    {
+                        data[i, j] = value;
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        // Восстанавливает данные в новую сетку
+        private void RestoreGridData(double[,] oldData, int newSize)
+        {
+            if (oldData == null) return;
+
+            int oldSize = oldData.GetLength(0);
+
+            for (int i = 0; i < newSize; i++)
+            {
+                for (int j = 0; j < newSize + 1; j++) // +1 для свободных членов
+                {
+                    // Если индексы в пределах старых данных - восстанавливаем
+                    if (i < oldSize && j < oldSize + 1)
+                    {
+                        dgvEquations.Rows[i].Cells[j].Value = oldData[i, j].ToString();
+                    }
+                    else
+                    {
+                        // Для новых ячеек устанавливаем 0 или оставляем пустыми
+                        dgvEquations.Rows[i].Cells[j].Value = "0";
+                    }
+                }
+            }
         }
 
         private void btnRandomize_Click_1(object sender, EventArgs e)
@@ -711,6 +839,7 @@ namespace kurs
                 }
                 dgvEquations.Rows[i].Cells[size].Value = rand.Next(-20, 20);
             }
+            UpdateButtonsState();
         }
 
         private void btnSolve_Click_1(object sender, EventArgs e)
@@ -744,6 +873,7 @@ namespace kurs
                 }
 
                 SolveSystem(matrix, freeTerms);
+                UpdateSolutionButtonsState();
                 tabControlMain.SelectedTab = tabSolution;
             }
             catch (Exception ex)
@@ -863,6 +993,7 @@ namespace kurs
             {
                 isFileModified = true;
             }
+            UpdateButtonsState();
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -872,6 +1003,7 @@ namespace kurs
 
             int size = (int)nudSystemSize.Value;
             InitializeGrid(size);
+            UpdateButtonsState();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -910,6 +1042,28 @@ namespace kurs
             Form2 form2 = new Form2();
             form2.Show();
             this.Close();
+        }
+
+        private void rtbSolution_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSolutionButtonsState();
+        }
+
+        private void UpdateSolutionButtonsState()
+        {
+            bool hasSolutionText = !string.IsNullOrWhiteSpace(rtbSolution.Text);
+
+            button1.Enabled = hasSolutionText;
+            button2.Enabled = hasSolutionText;
+            btnCopySolution.Enabled = hasSolutionText;
+            btnSaveSolution.Enabled = hasSolutionText;
+
+            Color buttonColor = hasSolutionText ? Color.AliceBlue : Color.LightGray;
+
+            button1.BackColor = buttonColor;
+            button2.BackColor = buttonColor;
+            btnCopySolution.BackColor = buttonColor;
+            btnSaveSolution.BackColor = buttonColor;
         }
     }
 }
