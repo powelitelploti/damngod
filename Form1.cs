@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Reflection;
 using TextFileLibrary;
-using System.IO;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 
 namespace kurs
 {
@@ -24,18 +21,20 @@ namespace kurs
             dgvEquations.AllowUserToResizeColumns = false;
             dgvEquations.AllowUserToResizeRows = false;
             dgvEquations.CellValueChanged += dgvEquations_CellValueChanged;
-            //dgvEquations.KeyPress += dgvEquations_KeyPress;
             dgvEquations.EditingControlShowing += dgvEquations_EditingControlShowing;
+            SetGridViewSortState(dgvEquations, DataGridViewColumnSortMode.NotSortable);
+        }
 
+        public static void SetGridViewSortState(DataGridView dgv, DataGridViewColumnSortMode sortMode)
+        {
+            foreach (DataGridViewColumn col in dgv.Columns)
+                col.SortMode = sortMode;
         }
 
         private void dgvEquations_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             if (e.Control is System.Windows.Forms.TextBox textBox)
             {
-                // Удаляем предыдущие обработчики (чтобы избежать дублирования)
-                textBox.KeyPress -= TextBox_KeyPress;
-                // Добавляем наш обработчик
                 textBox.KeyPress += TextBox_KeyPress;
             }
         }
@@ -48,7 +47,7 @@ namespace kurs
                 e.KeyChar == '.' ||
                 e.KeyChar == (char)Keys.Back)
             {
-                return; // Разрешаем ввод
+                return;
             }
             e.Handled = true;
         }
@@ -75,6 +74,7 @@ namespace kurs
             }
         }
 
+        //Вывод подробного решения
         private void SolveSystem(double[,] matrix, double[] freeTerms)
         {
             Stopwatch sw = Stopwatch.StartNew();
@@ -95,11 +95,9 @@ namespace kurs
             solutionText.AppendLine(GetSystemString(matrix, freeTerms));
             solutionText.AppendLine();
 
-            // ПОДРОБНОЕ ВЫЧИСЛЕНИЕ ПО МЕТОДУ КРАМЕРА
             solutionText.AppendLine("РЕШЕНИЕ ПО МЕТОДУ КРАМЕРА:");
             solutionText.AppendLine();
 
-            // Главный определитель
             solutionText.AppendLine("1. ВЫЧИСЛЕНИЕ ГЛАВНОГО ОПРЕДЕЛИТЕЛЯ (Δ):");
             solutionText.AppendLine("Исходная матрица:");
             solutionText.AppendLine(GetMatrixString(matrix));
@@ -115,7 +113,6 @@ namespace kurs
                 return;
             }
 
-            // Вычисление определителей для каждой переменной
             double[] solutions = new double[size];
             solutionText.AppendLine("2. ВЫЧИСЛЕНИЕ ВСПОМОГАТЕЛЬНЫХ ОПРЕДЕЛИТЕЛЕЙ:");
 
@@ -136,7 +133,6 @@ namespace kurs
 
             solutionText.AppendLine();
 
-            // ПОДРОБНОЕ ВЫЧИСЛЕНИЕ ЧИСЛА ОБУСЛОВЛЕННОСТИ
             solutionText.AppendLine("3. ВЫЧИСЛЕНИЕ ЧИСЛА ОБУСЛОВЛЕННОСТИ:");
             double cond = CalculateConditionNumberWithSteps(matrix, solutionText);
 
@@ -151,17 +147,14 @@ namespace kurs
             solutionText.AppendLine(conditionMessage);
             solutionText.AppendLine();
 
-            // Выводим решение
             solutionText.AppendLine("4. РЕЗУЛЬТАТ:");
             for (int i = 0; i < size; i++)
             {
                 solutionText.AppendLine($"x{i + 1} = {solutions[i]:F5}");
             }
 
-            // Добавляем информацию о времени выполнения
             sw.Stop();
 
-            // Проверка решения (невязка)
             solutionText.AppendLine("ПРОВЕРКА РЕШЕНИЯ:");
             double maxError = CalculateSolutionError(matrix, freeTerms, solutions);
             solutionText.AppendLine($"Максимальная невязка: {maxError:E2}");
@@ -172,13 +165,13 @@ namespace kurs
             SolveSystemBrief(matrix, freeTerms);
         }
 
+        //Вывод результатов 
         private void SolveSystemBrief(double[,] matrix, double[] freeTerms)
         {
             Stopwatch sw = Stopwatch.StartNew();
             StringBuilder solutionText = new StringBuilder();
             int size = freeTerms.Length;
 
-            // Заголовок и исходная система
             if (!string.IsNullOrEmpty(currentFilePath))
             {
                 string fileInfo = isFileModified ?
@@ -190,7 +183,6 @@ namespace kurs
 
             try
             {
-                // Вычисляем главный определитель
                 double mainDet = CalculateDeterminantOptimized(matrix);
                 solutionText.AppendLine($"Главный определитель Δ = {mainDet:F5}");
                 solutionText.AppendLine();
@@ -358,11 +350,9 @@ namespace kurs
                     }
                 }
             }
-
             sb.AppendLine($"Финальное значение {determinantName} = {det:F5}");
             return det;
         }
-
 
         private double CalculateConditionNumberWithSteps(double[,] matrix, StringBuilder sb)
         {
@@ -433,6 +423,26 @@ namespace kurs
             return sb.ToString();
         }
 
+        private string GetSystemString(double[,] matrix, double[] freeTerms)
+        {
+            StringBuilder sb = new StringBuilder();
+        int size = freeTerms.Length;
+
+            for (int i = 0; i<size; i++)
+            {
+                for (int j = 0; j<size; j++)
+                {
+                    if (j != 0 && matrix[i, j] >= 0) sb.Append(" + ");
+                    else if (j != 0) sb.Append(" - ");
+                    else if (matrix[i, j] < 0) sb.Append("-");
+
+                    sb.Append($"{Math.Abs(matrix[i, j]):F2}x{j + 1}");
+                }
+                 sb.AppendLine($" = {freeTerms[i]:F2}");
+            }
+            return sb.ToString();
+        }
+
 
         // Оптимизированное вычисление определителя через метод Гаусса
         private double CalculateDeterminantOptimized(double[,] matrix)
@@ -487,30 +497,7 @@ namespace kurs
                     }
                 }
             }
-
             return det;
-        }
-
-        // Остальные методы остаются без изменений
-        private string GetSystemString(double[,] matrix, double[] freeTerms)
-        {
-            StringBuilder sb = new StringBuilder();
-            int size = freeTerms.Length;
-
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    if (j != 0 && matrix[i, j] >= 0) sb.Append(" + ");
-                    else if (j != 0) sb.Append(" - ");
-                    else if (matrix[i, j] < 0) sb.Append("-");
-
-                    sb.Append($"{Math.Abs(matrix[i, j]):F2}x{j + 1}");
-                }
-                sb.AppendLine($" = {freeTerms[i]:F2}");
-            }
-
-            return sb.ToString();
         }
 
         private double CalculateConditionNumber(double[,] matrix)
@@ -638,6 +625,7 @@ namespace kurs
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 SaveSystemToFile(saveDialog.FileName);
+                isFileModified = false;
             }
         }
 
@@ -692,7 +680,7 @@ namespace kurs
             }
         }
 
-        private void btnCopy_Click(object sender, EventArgs e)
+        private void btnCopySolution_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(rtbSolution.Text))
             {
@@ -772,10 +760,6 @@ namespace kurs
             tabControlMain.SelectedIndex = 0;
         }
 
-        private void btnCopySolution_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetDataObject(rtbSolution.Text);
-        }
 
         private void btnLoadFromFile_Click(object sender, EventArgs e)
         {
@@ -869,64 +853,6 @@ namespace kurs
                               MessageBoxButtons.OK,
 
                 MessageBoxIcon.Error);
-                return false;
-            }
-        }
-
-        private void btnSave_Click_1(object sender, EventArgs e)
-        {
-
-            if (!string.IsNullOrEmpty(currentFilePath) && !isFileModified)
-            {
-                SaveToFile(currentFilePath);
-                return;
-            }
-
-            SaveFileDialog saveDialog = new SaveFileDialog
-            {
-                Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-                Title = "Сохранить систему уравнений",
-                FileName = string.IsNullOrEmpty(currentFilePath) ? "system.txt" : System.IO.Path.GetFileName(currentFilePath)
-            };
-
-            if (saveDialog.ShowDialog() == DialogResult.OK)
-            {
-                if (SaveToFile(saveDialog.FileName))
-                {
-                    currentFilePath = saveDialog.FileName;
-                    isFileModified = false;
-                }
-            }
-        }
-
-        private bool SaveToFile(string filePath)
-        {
-            try
-            {
-                int size = (int)nudSystemSize.Value;
-                StringBuilder sb = new StringBuilder();
-
-                for (int i = 0; i < size; i++)
-                {
-                    for (int j = 0; j < size; j++)
-                    {
-                        sb.Append(dgvEquations.Rows[i].Cells[j].Value?.ToString() ?? "0");
-                        sb.Append("\t"); // Табуляция как разделитель
-                    }
-                    sb.Append(dgvEquations.Rows[i].Cells[size].Value?.ToString() ?? "0");
-                    sb.AppendLine();
-                }
-
-                System.IO.File.WriteAllText(filePath, sb.ToString());
-
-                MessageBox.Show("Система успешно сохранена", "Сохранение",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

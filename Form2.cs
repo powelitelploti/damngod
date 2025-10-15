@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using kurs;
 
 namespace kurs
 {
@@ -34,16 +26,6 @@ namespace kurs
                                 "• Точность: до 10⁻¹³";
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             Form1 form1 = new Form1();
@@ -56,6 +38,12 @@ namespace kurs
             Form3 form3 = new Form3();
             form3.Show();
             this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Программа разработана студенткой группы 22290907/1091 \nПрониной Ариной Александровной");
+
         }
     }
 }
