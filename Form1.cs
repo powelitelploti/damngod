@@ -90,14 +90,46 @@ namespace kurs
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Разрешаем: цифры, знак минуса, десятичная точка, Backspace
-            if (char.IsDigit(e.KeyChar) ||
-                e.KeyChar == '-' ||
-                e.KeyChar == '.' ||
-                e.KeyChar == (char)Keys.Back)
+            TextBox textBox = (TextBox)sender;
+            string currentText = textBox.Text;
+            int cursorPos = textBox.SelectionStart;
+
+            // Всегда разрешаем Backspace
+            if (e.KeyChar == (char)Keys.Back)
+                return;
+
+            // Проверяем минус
+            if (e.KeyChar == '-')
             {
+                // Минус можно только в начале и если его еще нет
+                if (cursorPos == 0 && !currentText.Contains("-"))
+                    return;
+
+                e.Handled = true;
                 return;
             }
+
+            // Проверяем точку
+            if (e.KeyChar == '.')
+            {
+                // Точку можно только если:
+                // 1. Еще нет других точек
+                // 2. Не в начале числа
+                // 3. Не сразу после минуса
+                if (!currentText.Contains(".") &&
+                    cursorPos > 0 &&
+                    !(cursorPos == 1 && currentText.StartsWith("-")))
+                    return;
+
+                e.Handled = true;
+                return;
+            }
+
+            // Цифры разрешаем всегда
+            if (char.IsDigit(e.KeyChar))
+                return;
+
+            // Все остальное блокируем
             e.Handled = true;
         }
 
@@ -151,7 +183,7 @@ namespace kurs
             solutionText.AppendLine(GetMatrixString(matrix));
 
             double mainDet = CalculateDeterminantWithSteps(matrix, solutionText, "Δ");
-            solutionText.AppendLine($"ГЛАВНЫЙ ОПРЕДЕЛИТЕЛЬ Δ = {mainDet:F5}");
+            solutionText.AppendLine($"ГЛАВНЫЙ ОПРЕДЕЛИТЕЛЬ Δ = {mainDet:F11}");
             solutionText.AppendLine();
 
             if (Math.Abs(mainDet) < 1e-10)
@@ -176,7 +208,7 @@ namespace kurs
                 solutions[i] = detI / mainDet;
 
                 solutionText.AppendLine($"Δ{i + 1} = {detI:F5}");
-                solutionText.AppendLine($"x{i + 1} = Δ{i + 1} / Δ = {detI:F5} / {mainDet:F5} = {solutions[i]:F5}");
+                solutionText.AppendLine($"x{i + 1} = Δ{i + 1} / Δ = {detI:F5} / {mainDet:F5} = {solutions[i]:F11}");
             }
 
             solutionText.AppendLine();
@@ -198,7 +230,7 @@ namespace kurs
             solutionText.AppendLine("4. РЕЗУЛЬТАТ:");
             for (int i = 0; i < size; i++)
             {
-                solutionText.AppendLine($"x{i + 1} = {solutions[i]:F5}");
+                solutionText.AppendLine($"x{i + 1} = {solutions[i]:F11}");
             }
 
             sw.Stop();
@@ -232,7 +264,7 @@ namespace kurs
             try
             {
                 double mainDet = CalculateDeterminantOptimized(matrix);
-                solutionText.AppendLine($"Главный определитель Δ = {mainDet:F5}");
+                solutionText.AppendLine($"Главный определитель Δ = {mainDet:F11}");
                 solutionText.AppendLine();
 
                 if (Math.Abs(mainDet) < 1e-10)
@@ -256,7 +288,7 @@ namespace kurs
                 solutionText.AppendLine("РЕШЕНИЕ СИСТЕМЫ:");
                 for (int i = 0; i < size; i++)
                 {
-                    solutionText.AppendLine($"x{i + 1} = {solutions[i]:F6}");
+                    solutionText.AppendLine($"x{i + 1} = {solutions[i]:F11}");
                 }
                 solutionText.AppendLine();
 
@@ -305,24 +337,20 @@ namespace kurs
         double CalculateSolutionError(double[,] matrix, double[] freeTerms, double[] solutions)
         {
             int size = freeTerms.Length;
-            double maxError = 0;  // Здесь будет максимальная невязка
+            double maxError = 0;
 
-            for (int i = 0; i < size; i++)  // Перебираем ВСЕ уравнения
+            for (int i = 0; i < size; i++)
             {
                 double sum = 0;
                 for (int j = 0; j < size; j++)
                 {
-                    //левая часть уравнения с найденным решением
-                    sum += matrix[i, j] * solutions[j];
+                    // Используем decimal для точных вычислений
+                    sum += (double)((decimal)matrix[i, j] * (decimal)solutions[j]);
                 }
-
-                // (разница между вычисленным и должным
                 double error = Math.Abs(sum - freeTerms[i]);
-
-                if (error > maxError) maxError = error;  // Ищем максимальную невязку
+                if (error > maxError) maxError = error;
             }
-
-            return maxError;  // Возвращаем максимальную невязку
+            return maxError;
         }
 
 
@@ -415,10 +443,10 @@ namespace kurs
                 {
                     rowSum += Math.Abs(matrix[i, j]);
                 }
-                sb.AppendLine($"  Строка {i + 1}: {rowSum:F5}");
+                sb.AppendLine($"  Строка {i + 1}: {rowSum:F6}");
                 if (rowSum > normA) normA = rowSum;
             }
-            sb.AppendLine($"‖A‖ = {normA:F5}");
+            sb.AppendLine($"‖A‖ = {normA:F6}");
             sb.AppendLine();
 
             try
@@ -436,14 +464,25 @@ namespace kurs
                     {
                         rowSum += Math.Abs(inverse[i, j]);
                     }
-                    sb.AppendLine($"  Строка {i + 1}: {rowSum:F5}");
+                    // ИСПРАВЛЕНО: правильный формат для маленьких чисел
+                    if (Math.Abs(rowSum) < 1e-5)
+                        sb.AppendLine($"  Строка {i + 1}: {rowSum:E10}");
+                    else
+                        sb.AppendLine($"  Строка {i + 1}: {rowSum:F10}");
+
                     if (rowSum > normInv) normInv = rowSum;
                 }
-                sb.AppendLine($"‖A⁻¹‖ = {normInv:F5}");
+
+                // ИСПРАВЛЕНО: для нормы тоже
+                if (Math.Abs(normInv) < 1e-5)
+                    sb.AppendLine($"‖A⁻¹‖ = {normInv:E10}");
+                else
+                    sb.AppendLine($"‖A⁻¹‖ = {normInv:F10}");
+
                 sb.AppendLine();
 
                 double cond = normA * normInv;
-                sb.AppendLine($"Число обусловленности: ‖A‖ × ‖A⁻¹‖ = {normA:F5} × {normInv:F5} = {cond:F5}");
+                sb.AppendLine($"Число обусловленности: ‖A‖ × ‖A⁻¹‖ = {normA:F6} × {normInv:E10} = {cond:F2}");
 
                 return cond;
             }
@@ -464,7 +503,11 @@ namespace kurs
                 sb.Append("  ");
                 for (int j = 0; j < size; j++)
                 {
-                    sb.Append($"{matrix[i, j],8:F3} ");
+                    // Для очень маленьких чисел используем экспоненту
+                    if (Math.Abs(matrix[i, j]) < 0.0001 && matrix[i, j] != 0)
+                        sb.Append($"{matrix[i, j],12:E6} ");
+                    else
+                        sb.Append($"{matrix[i, j],12:F6} ");
                 }
                 sb.AppendLine();
             }
@@ -496,6 +539,14 @@ namespace kurs
         private double CalculateDeterminantOptimized(double[,] matrix)
         {
             int n = matrix.GetLength(0);
+
+            // Базовые случаи
+            if (n == 1)
+                return matrix[0, 0];
+
+            if (n == 2)
+                return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
+
             double det = 1;
             double[,] tempMatrix = (double[,])matrix.Clone();
 
@@ -536,8 +587,6 @@ namespace kurs
                 // Исключение переменной из других уравнений
                 for (int k = i + 1; k < n; k++)
                 {
-
-
                     double factor = tempMatrix[k, i] / tempMatrix[i, i];
                     for (int j = i; j < n; j++)
                     {
@@ -589,10 +638,28 @@ namespace kurs
         private double[,] GetInverseMatrix(double[,] matrix)
         {
             int size = matrix.GetLength(0);
+
+            // Оптимизация для матрицы 2×2
+            if (size == 2)
+            {
+                double a = matrix[0, 0], b = matrix[0, 1];
+                double c = matrix[1, 0], d = matrix[1, 1];
+                double detForInverse = a * d - b * c;
+
+                if (Math.Abs(detForInverse) < 1e-15)
+                    throw new Exception("Матрица вырождена");
+
+                return new double[,] {
+            { d/detForInverse, -b/detForInverse },
+            { -c/detForInverse, a/detForInverse }
+        };
+            }
+
+            // Общий случай для n×n (n > 2)
             double[,] inverse = new double[size, size];
             double det = CalculateDeterminantOptimized(matrix);
 
-            if (Math.Abs(det) < 1e-10)
+            if (Math.Abs(det) < 1e-15)
                 throw new Exception("Матрица вырождена");
 
             for (int i = 0; i < size; i++)
@@ -600,7 +667,7 @@ namespace kurs
                 for (int j = 0; j < size; j++)
                 {
                     double[,] minor = GetMinor(matrix, i, j);
-                    inverse[j, i] = Math.Pow(-1, i + j) * CalculateDeterminantOptimized(minor) / det;
+                    inverse[i, j] = Math.Pow(-1, i + j) * CalculateDeterminantOptimized(minor) / det;
                 }
             }
 
@@ -1056,6 +1123,7 @@ namespace kurs
             btnCopySolution.Enabled = hasSolutionText;
             btnSaveSolution.Enabled = hasSolutionText;
             label1.Visible = !hasSolutionText;
+            label3.Visible = !hasSolutionText;
 
             Color buttonColor = hasSolutionText ? Color.AliceBlue : Color.LightGray;
 

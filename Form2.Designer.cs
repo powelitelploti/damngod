@@ -42,20 +42,20 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.AliceBlue;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(43, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(619, 39);
+            this.label1.Size = new System.Drawing.Size(621, 38);
             this.label1.TabIndex = 0;
             this.label1.Text = "ДОБРО ПОЖАЛОВАТЬ В ПРОГРАММУ ";
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.AliceBlue;
-            this.button1.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(49, 680);
+            this.button1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(919, 272);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 23);
+            this.button1.Size = new System.Drawing.Size(148, 57);
             this.button1.TabIndex = 1;
             this.button1.Text = "О программе";
             this.button1.UseVisualStyleBackColor = false;
@@ -65,7 +65,7 @@
             // 
             this.button2.BackColor = System.Drawing.Color.AliceBlue;
             this.button2.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(873, 597);
+            this.button2.Location = new System.Drawing.Point(865, 595);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(243, 84);
             this.button2.TabIndex = 2;
@@ -77,17 +77,17 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.AliceBlue;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.Location = new System.Drawing.Point(43, 72);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(677, 39);
+            this.label2.Size = new System.Drawing.Size(681, 38);
             this.label2.TabIndex = 3;
             this.label2.Text = "ДЛЯ РЕШЕНИЯ СЛАУ МЕТОДОМ КРАМЕРА";
             // 
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.Color.AliceBlue;
-            this.richTextBox1.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBox1.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTextBox1.Location = new System.Drawing.Point(49, 137);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -98,21 +98,21 @@
             // richTextBox2
             // 
             this.richTextBox2.BackColor = System.Drawing.Color.AliceBlue;
-            this.richTextBox2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.richTextBox2.Location = new System.Drawing.Point(49, 475);
+            this.richTextBox2.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBox2.Location = new System.Drawing.Point(49, 479);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.Size = new System.Drawing.Size(546, 181);
+            this.richTextBox2.Size = new System.Drawing.Size(546, 200);
             this.richTextBox2.TabIndex = 5;
             this.richTextBox2.Text = "";
             // 
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.AliceBlue;
-            this.button3.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(49, 633);
+            this.button3.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button3.Location = new System.Drawing.Point(49, 628);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(546, 23);
+            this.button3.Size = new System.Drawing.Size(546, 51);
             this.button3.TabIndex = 6;
             this.button3.Text = "Подробнее";
             this.button3.UseVisualStyleBackColor = false;

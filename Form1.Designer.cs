@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabEquations = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnSaveSystem = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             this.nudSystemSize = new System.Windows.Forms.NumericUpDown();
             this.dgvEquations = new System.Windows.Forms.DataGridView();
             this.tabSolution = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnSaveSolution = new System.Windows.Forms.Button();
@@ -48,7 +50,7 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.rtbSolution = new System.Windows.Forms.RichTextBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.tabControlMain.SuspendLayout();
             this.tabEquations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).BeginInit();
@@ -61,7 +63,7 @@
             this.tabControlMain.Controls.Add(this.tabEquations);
             this.tabControlMain.Controls.Add(this.tabSolution);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlMain.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tabControlMain.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControlMain.Location = new System.Drawing.Point(0, 0);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
@@ -71,6 +73,8 @@
             // tabEquations
             // 
             this.tabEquations.BackColor = System.Drawing.Color.AliceBlue;
+            this.tabEquations.Controls.Add(this.label3);
+            this.tabEquations.Controls.Add(this.label2);
             this.tabEquations.Controls.Add(this.button3);
             this.tabEquations.Controls.Add(this.btnClear);
             this.tabEquations.Controls.Add(this.btnSaveSystem);
@@ -87,12 +91,25 @@
             this.tabEquations.TabIndex = 1;
             this.tabEquations.Text = "Система уравнений";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(75, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(232, 22);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Размерность матрицы:";
+            // 
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.AliceBlue;
+            this.button3.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button3.Location = new System.Drawing.Point(3, 11);
+            this.button3.Margin = new System.Windows.Forms.Padding(0);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(54, 741);
+            this.button3.Size = new System.Drawing.Size(57, 741);
             this.button3.TabIndex = 8;
             this.button3.Text = "Назад";
             this.button3.UseVisualStyleBackColor = false;
@@ -102,9 +119,10 @@
             // 
             this.btnClear.BackColor = System.Drawing.Color.AliceBlue;
             this.btnClear.Enabled = false;
-            this.btnClear.Location = new System.Drawing.Point(482, 7);
+            this.btnClear.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnClear.Location = new System.Drawing.Point(822, 5);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(82, 23);
+            this.btnClear.Size = new System.Drawing.Size(110, 37);
             this.btnClear.TabIndex = 7;
             this.btnClear.Text = "Очистить";
             this.btnClear.UseVisualStyleBackColor = false;
@@ -114,9 +132,10 @@
             // 
             this.btnSaveSystem.BackColor = System.Drawing.Color.AliceBlue;
             this.btnSaveSystem.Enabled = false;
-            this.btnSaveSystem.Location = new System.Drawing.Point(392, 7);
+            this.btnSaveSystem.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSaveSystem.Location = new System.Drawing.Point(706, 5);
             this.btnSaveSystem.Name = "btnSaveSystem";
-            this.btnSaveSystem.Size = new System.Drawing.Size(82, 23);
+            this.btnSaveSystem.Size = new System.Drawing.Size(110, 37);
             this.btnSaveSystem.TabIndex = 6;
             this.btnSaveSystem.Text = "Сохранить";
             this.btnSaveSystem.UseVisualStyleBackColor = false;
@@ -125,9 +144,10 @@
             // btnLoadFromFile
             // 
             this.btnLoadFromFile.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnLoadFromFile.Location = new System.Drawing.Point(301, 7);
+            this.btnLoadFromFile.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnLoadFromFile.Location = new System.Drawing.Point(590, 5);
             this.btnLoadFromFile.Name = "btnLoadFromFile";
-            this.btnLoadFromFile.Size = new System.Drawing.Size(82, 23);
+            this.btnLoadFromFile.Size = new System.Drawing.Size(110, 37);
             this.btnLoadFromFile.TabIndex = 5;
             this.btnLoadFromFile.Text = "Загрузить";
             this.btnLoadFromFile.UseVisualStyleBackColor = false;
@@ -136,9 +156,10 @@
             // btnRandomize
             // 
             this.btnRandomize.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnRandomize.Location = new System.Drawing.Point(159, 7);
+            this.btnRandomize.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnRandomize.Location = new System.Drawing.Point(383, 5);
             this.btnRandomize.Name = "btnRandomize";
-            this.btnRandomize.Size = new System.Drawing.Size(132, 23);
+            this.btnRandomize.Size = new System.Drawing.Size(201, 37);
             this.btnRandomize.TabIndex = 4;
             this.btnRandomize.Text = "Заполнить случайно";
             this.btnRandomize.UseVisualStyleBackColor = false;
@@ -148,9 +169,10 @@
             // 
             this.btnSolve.BackColor = System.Drawing.Color.AliceBlue;
             this.btnSolve.Enabled = false;
-            this.btnSolve.Location = new System.Drawing.Point(904, 537);
+            this.btnSolve.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSolve.Location = new System.Drawing.Point(988, 589);
             this.btnSolve.Name = "btnSolve";
-            this.btnSolve.Size = new System.Drawing.Size(86, 41);
+            this.btnSolve.Size = new System.Drawing.Size(189, 89);
             this.btnSolve.TabIndex = 3;
             this.btnSolve.Text = "Решить";
             this.btnSolve.UseVisualStyleBackColor = false;
@@ -159,7 +181,7 @@
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.Color.White;
-            this.richTextBox1.Location = new System.Drawing.Point(63, 537);
+            this.richTextBox1.Location = new System.Drawing.Point(63, 547);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(824, 194);
@@ -168,7 +190,8 @@
             // 
             // nudSystemSize
             // 
-            this.nudSystemSize.Location = new System.Drawing.Point(63, 9);
+            this.nudSystemSize.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nudSystemSize.Location = new System.Drawing.Point(313, 11);
             this.nudSystemSize.Maximum = new decimal(new int[] {
             20,
             0,
@@ -180,7 +203,7 @@
             0,
             0});
             this.nudSystemSize.Name = "nudSystemSize";
-            this.nudSystemSize.Size = new System.Drawing.Size(75, 21);
+            this.nudSystemSize.Size = new System.Drawing.Size(61, 27);
             this.nudSystemSize.TabIndex = 1;
             this.nudSystemSize.Value = new decimal(new int[] {
             2,
@@ -198,7 +221,7 @@
             this.dgvEquations.BackgroundColor = System.Drawing.Color.White;
             this.dgvEquations.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dgvEquations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvEquations.Location = new System.Drawing.Point(63, 36);
+            this.dgvEquations.Location = new System.Drawing.Point(63, 50);
             this.dgvEquations.Name = "dgvEquations";
             this.dgvEquations.RowHeadersWidth = 80;
             this.dgvEquations.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -219,18 +242,30 @@
             this.tabSolution.Controls.Add(this.btnCopySolution);
             this.tabSolution.Controls.Add(this.btnBack);
             this.tabSolution.Controls.Add(this.rtbSolution);
-            this.tabSolution.Location = new System.Drawing.Point(4, 25);
+            this.tabSolution.Location = new System.Drawing.Point(4, 26);
             this.tabSolution.Name = "tabSolution";
-            this.tabSolution.Size = new System.Drawing.Size(1257, 758);
+            this.tabSolution.Size = new System.Drawing.Size(1257, 757);
             this.tabSolution.TabIndex = 2;
             this.tabSolution.Text = "Решение";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(375, 343);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(545, 24);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Нажмите кнопку \"Решить\" чтобы увидеть решение!";
             // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.AliceBlue;
-            this.button2.Location = new System.Drawing.Point(866, 705);
+            this.button2.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Location = new System.Drawing.Point(977, 705);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(383, 23);
+            this.button2.Size = new System.Drawing.Size(240, 50);
             this.button2.TabIndex = 5;
             this.button2.Text = "Выбрать шрифт";
             this.button2.UseVisualStyleBackColor = false;
@@ -239,9 +274,10 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.AliceBlue;
-            this.button1.Location = new System.Drawing.Point(58, 705);
+            this.button1.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Location = new System.Drawing.Point(92, 705);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(383, 23);
+            this.button1.Size = new System.Drawing.Size(240, 50);
             this.button1.TabIndex = 4;
             this.button1.Text = "Распечатать решение";
             this.button1.UseVisualStyleBackColor = false;
@@ -250,9 +286,10 @@
             // btnSaveSolution
             // 
             this.btnSaveSolution.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnSaveSolution.Location = new System.Drawing.Point(461, 705);
+            this.btnSaveSolution.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnSaveSolution.Location = new System.Drawing.Point(689, 705);
             this.btnSaveSolution.Name = "btnSaveSolution";
-            this.btnSaveSolution.Size = new System.Drawing.Size(383, 23);
+            this.btnSaveSolution.Size = new System.Drawing.Size(240, 50);
             this.btnSaveSolution.TabIndex = 3;
             this.btnSaveSolution.Text = "Сохранить решение";
             this.btnSaveSolution.UseVisualStyleBackColor = false;
@@ -261,9 +298,10 @@
             // btnCopySolution
             // 
             this.btnCopySolution.BackColor = System.Drawing.Color.AliceBlue;
-            this.btnCopySolution.Location = new System.Drawing.Point(58, 734);
+            this.btnCopySolution.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnCopySolution.Location = new System.Drawing.Point(379, 705);
             this.btnCopySolution.Name = "btnCopySolution";
-            this.btnCopySolution.Size = new System.Drawing.Size(1197, 23);
+            this.btnCopySolution.Size = new System.Drawing.Size(240, 50);
             this.btnCopySolution.TabIndex = 2;
             this.btnCopySolution.Text = "Копировать решение";
             this.btnCopySolution.UseVisualStyleBackColor = false;
@@ -273,9 +311,11 @@
             // 
             this.btnBack.BackColor = System.Drawing.Color.AliceBlue;
             this.btnBack.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnBack.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnBack.Location = new System.Drawing.Point(0, 0);
+            this.btnBack.Margin = new System.Windows.Forms.Padding(0);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(52, 758);
+            this.btnBack.Size = new System.Drawing.Size(55, 757);
             this.btnBack.TabIndex = 1;
             this.btnBack.Text = "Назад";
             this.btnBack.UseVisualStyleBackColor = false;
@@ -293,16 +333,16 @@
             this.rtbSolution.Text = "";
             this.rtbSolution.TextChanged += new System.EventHandler(this.rtbSolution_TextChanged);
             // 
-            // label1
+            // label3
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(436, 340);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(408, 21);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Нажмите кнопку \"Решить\" чтобы увидеть решение!";
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(221, 625);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(490, 22);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Чтобы увидеть решение нажмите кнопку \"Решить\"!";
             // 
             // Form1
             // 
@@ -320,6 +360,7 @@
             this.Text = "Решение систем линейных алгебраических уравнений методом Крамера";
             this.tabControlMain.ResumeLayout(false);
             this.tabEquations.ResumeLayout(false);
+            this.tabEquations.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEquations)).EndInit();
             this.tabSolution.ResumeLayout(false);
@@ -350,6 +391,8 @@
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 
