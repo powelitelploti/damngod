@@ -11,3 +11,17 @@ E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debu
 E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\________.9F541A3C.Up2Date
 E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.exe
 E:\iliin\1КУРСОВОЙ ПРОЕКТ\курсовая надежда\obj\Debug\курсовая надежда.pdb
+C:\Users\222909071091-12\Downloads\damngod\bin\Debug\курсовая надежда.exe.config
+C:\Users\222909071091-12\Downloads\damngod\bin\Debug\курсовая надежда.exe
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая надежда.csproj.AssemblyReference.cache
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая надежда.exe.config
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\kurs.Form1.resources
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\kurs.Form2.resources
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\kurs.Form3.resources
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая_надежда.Properties.Resources.resources
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая надежда.csproj.GenerateResource.cache
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая надежда.csproj.CoreCompileInputs.cache
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\________.9F541A3C.Up2Date
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая надежда.exe
+C:\Users\222909071091-12\Downloads\damngod\obj\Debug\курсовая надежда.pdb
+C:\Users\222909071091-12\Downloads\damngod\bin\Debug\курсовая надежда.pdb

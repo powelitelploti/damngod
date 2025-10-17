@@ -48,6 +48,7 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.rtbSolution = new System.Windows.Forms.RichTextBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControlMain.SuspendLayout();
             this.tabEquations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).BeginInit();
@@ -211,6 +212,7 @@
             // tabSolution
             // 
             this.tabSolution.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.tabSolution.Controls.Add(this.label1);
             this.tabSolution.Controls.Add(this.button2);
             this.tabSolution.Controls.Add(this.button1);
             this.tabSolution.Controls.Add(this.btnSaveSolution);
@@ -291,6 +293,17 @@
             this.rtbSolution.Text = "";
             this.rtbSolution.TextChanged += new System.EventHandler(this.rtbSolution_TextChanged);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(436, 340);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(408, 21);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Нажмите кнопку \"Решить\" чтобы увидеть решение!";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +323,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSystemSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEquations)).EndInit();
             this.tabSolution.ResumeLayout(false);
+            this.tabSolution.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -335,6 +349,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label1;
     }
 }
 

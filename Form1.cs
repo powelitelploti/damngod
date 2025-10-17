@@ -1039,8 +1039,6 @@ namespace kurs
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
             this.Close();
         }
 
@@ -1057,6 +1055,7 @@ namespace kurs
             button2.Enabled = hasSolutionText;
             btnCopySolution.Enabled = hasSolutionText;
             btnSaveSolution.Enabled = hasSolutionText;
+            label1.Visible = !hasSolutionText;
 
             Color buttonColor = hasSolutionText ? Color.AliceBlue : Color.LightGray;
 
